@@ -60,33 +60,19 @@
  */
 // TODO Insert declarations or function prototypes (right here) to leverage 
 // live documentation
-#define READ 1
-#define WRITE 0
-
+#define WRITE(ADDR) (ADDR << 1) 
+#define READ(ADDR) (ADDR << 1) | 0
 
 typedef struct {
     char sendLen; // hi
     char *sendData;
     char recvLen;
     char *recvData;
-    char devAddr;
-    char readWrite;
 } I2CTransaction;
 
 void i2cInit(void);
 
 void i2ctransmit(I2CTransaction *trans);
-
-#ifdef	__cplusplus
-extern "C" {
-#endif /* __cplusplus */
-
-    // TODO If C++ is being used, regular C code needs function names to have C 
-    // linkage so the functions can be used by the c code. 
-
-#ifdef	__cplusplus
-}
-#endif /* __cplusplus */
 
 #endif	/* XC_HEADER_TEMPLATE_H */
 

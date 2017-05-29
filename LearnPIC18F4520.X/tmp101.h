@@ -12,8 +12,11 @@
 
 #include <xc.h> // include processor files - each processor file is guarded.  
 
+#define TMP101TEMP 0x00
+#define TMP101CONFIG 0x01
+
 void initTMP101(void);
-int getRawTemp(void);
+unsigned int getRawTemp(void);
 
 #endif
 

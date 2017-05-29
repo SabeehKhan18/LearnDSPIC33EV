@@ -71,11 +71,13 @@
 #include "tmp101.h"
 
 void main(void) {
-    OSCCONbits.IRCF = 7; // 8 MHz
+    OSCCONbits.IRCF = 0b110; // 4 MHz
     i2cInit();
     initTMP101();
-    float temp;
+    unsigned int temp;
+    int i = 0;
     while (1) {
-        temp = getRawTemp()*0.0625;
-    }
+        i++;
+        temp = getRawTemp();
+    }   
 }
