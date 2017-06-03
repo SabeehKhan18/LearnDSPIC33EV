@@ -2,10 +2,9 @@
  * File:   newmainXC16.c
  * Author: George Main IV
  *
- * This project will turn on an LED when a button is pressed.
- * This version uses an internal pull up resistor rather than external
+ * This project will turn on and off an LED using a timer
  * 
- * Created on June 3, 2017, 1:20 PM
+ * Created on June 3, 2017, 4:14 PM
  */
 
 
@@ -40,7 +39,7 @@
 // FWDT
 #pragma config WDTPOST = PS32768        // Watchdog Timer Postscaler Bits (1:32,768)
 #pragma config WDTPRE = PR128           // Watchdog Timer Prescaler Bit (1:128)
-#pragma config FWDTEN = ON              // Watchdog Timer Enable Bits (WDT Enabled)
+#pragma config FWDTEN = OFF             // Watchdog Timer Enable Bits (WDT and SWDTEN Disabled)
 #pragma config WINDIS = OFF             // Watchdog Timer Window Enable Bit (Watchdog timer in Non-Window Mode)
 #pragma config WDTWIN = WIN25           // Watchdog Window Select Bits (WDT Window is 25% of WDT period)
 
@@ -84,26 +83,60 @@
 int main(void) {
     
     device_initialize();
-    
-    // Set TRIS, PORT, and ANSEL B to zeros
-    ANSELB = 0x0;
-    TRISB = 0x0;
-    PORTB = 0x0;
 
-    // Set RB6 as INPUT pin
-    TRISBbits.TRISB6 = 1;
+    // Set TRIS, PORT, and ANSEL B to zeros
+    ANSELB = 0x00;
+    TRISB = 0x00;
+    PORTB = 0x00;
     
-    // Enable internal pull up resistor on RB6
-    CNPUBbits.CNPUB6 = 1;
+    // Enable interrupts
+    INTCON2bits.GIE = 1;
     
-    // Main Loop
-    while (1) {
- 
-        // Check if the button was pressed, if so turn on the LED
-        if (PORTBbits.RB6 == 0) {
-            PORTBbits.RB7 = 1;
-        } else {
-            PORTBbits.RB7 = 0;
-        }
-    }   
+    // Reset timer 1
+    T1CON = 0x00;
+    
+    T1CONbits.TCKPS = 0x11;
+    
+    // Clear timer 1
+    TMR1 = 0x11;
+    
+    // Set the period value for timer 1
+    PR1 = 78;
+    
+    // Set timer 1 interrupt priority
+    IPC0bits.T1IP = 1;
+    
+    // Reset timer 1 interrupt
+    IFS0bits.T1IF = 0;
+    
+    // Enable timer 1 interrupt
+    IEC0bits.T1IE = 1;
+    
+    // Start timer 1
+    T1CONbits.TON = 1;
+    
+    while (1);
+    return 0;
+    
+}
+
+// Counter
+int i = 0;
+
+void __attribute__((__interrupt__, no_auto_psv)) _T1Interrupt(void)
+{
+    // Increment counter
+    i++;
+    
+    // If 100 cycles have occurred
+    if (i % 5 == 0) { 
+        // Reset counter
+        i = 0;
+        // Switch LED state
+        PORTBbits.RB7 = ~PORTBbits.RB7;
+    }
+    
+    // Reset timer 1 interrupt
+    IFS0bits.T1IF = 0;
+    
 }

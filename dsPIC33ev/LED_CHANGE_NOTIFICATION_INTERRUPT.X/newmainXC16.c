@@ -40,7 +40,7 @@
 // FWDT
 #pragma config WDTPOST = PS32768        // Watchdog Timer Postscaler Bits (1:32,768)
 #pragma config WDTPRE = PR128           // Watchdog Timer Prescaler Bit (1:128)
-#pragma config FWDTEN = ON              // Watchdog Timer Enable Bits (WDT Enabled)
+#pragma config FWDTEN = OFF             // Watchdog Timer Enable Bits (WDT and SWDTEN Disabled)
 #pragma config WINDIS = OFF             // Watchdog Timer Window Enable Bit (Watchdog timer in Non-Window Mode)
 #pragma config WDTWIN = WIN25           // Watchdog Window Select Bits (WDT Window is 25% of WDT period)
 
@@ -84,8 +84,9 @@
 int main(void) {
     
     device_initialize();
-    
-    // Set TRIS and PORT B to zeros
+
+    // Set TRIS, PORT, and ANSEL B to zeros
+    ANSELB = 0x0;
     TRISB = 0x0;
     PORTB = 0x0;
 
@@ -95,14 +96,36 @@ int main(void) {
     // Enable internal pull up resistor on RB6
     CNPUBbits.CNPUB6 = 1;
     
-    // Main Loop
-    while (1) {
+    // Enable interrupts
+    INTCON2bits.GIE = 1;
+    
+    // Set interrupt priority
+    IPC4bits.CNIP = 3;
+   
+    // Enable change notification on RB6
+    CNENBbits.CNIEB6 = 1;
+    
+    // Enable change notification interrupts
+    IEC1bits.CNIE = 1;
+    
+    // Reset change notification interrupt
+    IFS1bits.CNIF = 0;
+    
+    while (1);
+    return 0;
+    
+}
+
+void __attribute__((__interrupt__)) _CNInterrupt(void) {
  
-        // Check if the button was pressed, if so turn on the LED
+    // Check if the button was pressed, if so turn on the LED
         if (PORTBbits.RB6 == 0) {
             PORTBbits.RB7 = 1;
         } else {
             PORTBbits.RB7 = 0;
         }
-    }   
+        
+    // Reset change notification interrupt
+    IFS1bits.CNIF = 0;
+
 }

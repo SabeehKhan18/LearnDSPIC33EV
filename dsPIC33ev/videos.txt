@@ -3,5 +3,6 @@ This text file contains links to videos of each project.
 Author: George Main IV
 Date Created: June 3, 2017
 
-LED_ON_BUTTON_PRESS	- Turns on an LED when a button is pressed. - https://goo.gl/photos/smn6Lu7tUbMRTASM8
+LED_ON_BUTTON_PRESS	- Turns on an LED when a button is pressed. Uses external pullup resistor. - https://goo.gl/photos/smn6Lu7tUbMRTASM8
 LED_ON_BUTTON_PRESS_EXTERNAL_PULLUP - Turns on an LED when a button is pressed. Uses internal pullup resistor. - https://goo.gl/photos/esVhZGahwpCzMy2i9
+LED_CHANGE_NOTIFICATION_INTERRUPT - Turns on an LED when a button is pressed using a change notification interrupt - https://goo.gl/photos/dTrocY6qpJLS5ebT8
