@@ -7,3 +7,4 @@ LED_ON_BUTTON_PRESS	- Turns on an LED when a button is pressed. Uses external pu
 LED_ON_BUTTON_PRESS_EXTERNAL_PULLUP - Turns on an LED when a button is pressed. Uses internal pullup resistor. - https://goo.gl/photos/esVhZGahwpCzMy2i9
 LED_CHANGE_NOTIFICATION_INTERRUPT - Turns on an LED when a button is pressed using a change notification interrupt - https://goo.gl/photos/dTrocY6qpJLS5ebT8
 SimpleUART - Receives an input and sends it back. https://goo.gl/photos/UMRi9yVvtiMuGTkm7
+LED_BLINK_TIMER - Turns on and off an LED using a timer - https://goo.gl/photos/8m4bBb13L9t3WQCM8
