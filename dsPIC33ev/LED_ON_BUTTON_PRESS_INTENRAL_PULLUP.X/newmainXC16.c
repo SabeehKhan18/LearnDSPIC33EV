@@ -2,9 +2,10 @@
  * File:   newmainXC16.c
  * Author: George Main IV
  *
- * This project will turn on an LED when a button is pressed
+ * This project will turn on an LED when a button is pressed.
+ * This version uses an internal pull up resistor rather than external
  * 
- * Created on June 3, 2017, 10:32 AM
+ * Created on June 3, 2017, 1:20 PM
  */
 
 
@@ -90,6 +91,9 @@ int main(void) {
 
     // Set RB6 as INPUT pin
     TRISBbits.TRISB6 = 1;
+    
+    // Enable internal pull up resistor on RB6
+    CNPUBbits.CNPUB6 = 1;
     
     // Main Loop
     while (1) {

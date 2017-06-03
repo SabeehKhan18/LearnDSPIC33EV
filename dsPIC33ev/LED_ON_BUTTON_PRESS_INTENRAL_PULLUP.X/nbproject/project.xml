@@ -6,12 +6,12 @@
             <name>LED_ON_BUTTON_PRESS_INTENRAL_PULLUP</name>
             <creation-uuid>1449068d-4e9f-465b-8224-587620374e19</creation-uuid>
             <make-project-type>0</make-project-type>
-            <c-extensions/>
+            <c-extensions>c</c-extensions>
             <cpp-extensions/>
-            <header-extensions/>
+            <header-extensions>h</header-extensions>
             <asminc-extensions/>
+            <sourceEncoding>ISO-8859-1</sourceEncoding>
             <make-dep-projects/>
-            <sourceEncoding>UTF-8</sourceEncoding>
         </data>
     </configuration>
 </project>
