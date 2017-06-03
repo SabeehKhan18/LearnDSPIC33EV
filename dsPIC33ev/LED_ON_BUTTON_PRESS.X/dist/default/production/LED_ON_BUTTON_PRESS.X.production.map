@@ -16,6 +16,7 @@ Command:
   -Lc:/program files (x86)/microchip/xc16/v1.31/bin/bin/../../support/dsPIC33E/gld \
   -Lc:/program files (x86)/microchip/xc16/v1.31/bin/bin/../../support/dsPIC33F/gld \
   build/default/production/newmainXC16.o \
+  build/default/production/device.o \
   --local-stack \
   --defsym=__MPLAB_BUILD=1 \
   -Tp33EV256GM102.gld.00 \
@@ -80,9 +81,9 @@ Program Memory  [Origin = 0x200, Length = 0x2a980]
 section                    address   length (PC units)   length (bytes) (dec)
 -------                    -------   -----------------   --------------------
 .text                        0x200               0x100           0x180  (384)
-.text                        0x300                0x1a            0x27  (39)
+.text                        0x300                0x8e            0xd5  (213)
 
-                 Total program memory used (bytes):          0x1a7  (423) <1%
+                 Total program memory used (bytes):          0x255  (597) <1%
 
 
 Ivt Memory  [Origin = 0x4, Length = 0x1fc]
@@ -113,10 +114,15 @@ External Symbols in Program Memory (by address):
 
                   0x000200                  __resetPRI
                   0x00023c                  __psv_init
-                  0x000248                  __data_init
                   0x000248                  __data_init_extended
+                  0x000248                  __data_init
                   0x0002fa                  __DefaultInterrupt
-                  0x000300                  _main
+                  0x000300                  _device_initialize
+                  0x000308                  _device_oscInit
+                  0x000330                  _device_setOscillator
+                  0x000362                  _device_disableInterrupts
+                  0x00036a                  _device_enableInterrupts
+                  0x000372                  _main
                   0x02ab80                  __FSEC.sec
 
 External Symbols in Program Memory (by name):
@@ -127,7 +133,12 @@ External Symbols in Program Memory (by name):
                   0x000248                  __data_init_extended
                   0x00023c                  __psv_init
                   0x000200                  __resetPRI
-                  0x000300                  _main
+                  0x000362                  _device_disableInterrupts
+                  0x00036a                  _device_enableInterrupts
+                  0x000300                  _device_initialize
+                  0x000308                  _device_oscInit
+                  0x000330                  _device_setOscillator
+                  0x000372                  _main
 
 Memory Configuration
 
@@ -156,6 +167,7 @@ aivt             0x000000           0xffffffff
 Linker script and memory map
 
 LOAD build/default/production/newmainXC16.o
+LOAD build/default/production/device.o
                     0x0001                  __MPLAB_BUILD = 0x1
 LOAD p33EV256GM102
 LOAD c:/program files (x86)/microchip/xc16/v1.31/bin/bin/../../lib\libfx-elf.a
@@ -259,26 +271,31 @@ __FALTREG
 .comment
  *(.comment)
 
-.debug_info       0x000000        0x460
+.debug_info       0x000000        0xc7b
  *(.debug_info)
- .debug_info      0x000000        0x460 build/default/production/newmainXC16.o
+ .debug_info      0x000000        0x482 build/default/production/newmainXC16.o
+ .debug_info      0x000482        0x7f9 build/default/production/device.o
  *(.gnu.linkonce.wi.*)
 
-.debug_abbrev     0x000000         0x90
+.debug_abbrev     0x000000        0x1a9
  *(.debug_abbrev)
- .debug_abbrev    0x000000         0x90 build/default/production/newmainXC16.o
+ .debug_abbrev    0x000000         0xa8 build/default/production/newmainXC16.o
+ .debug_abbrev    0x0000a8        0x101 build/default/production/device.o
 
-.debug_line       0x000000         0xa3
+.debug_line       0x000000        0x15a
  *(.debug_line)
- .debug_line      0x000000         0xa3 build/default/production/newmainXC16.o
+ .debug_line      0x000000         0xa4 build/default/production/newmainXC16.o
+ .debug_line      0x0000a4         0xb6 build/default/production/device.o
 
-.debug_frame      0x000000         0x30
+.debug_frame      0x000000         0xd0
  *(.debug_frame)
  .debug_frame     0x000000         0x30 build/default/production/newmainXC16.o
+ .debug_frame     0x000030         0xa0 build/default/production/device.o
 
-.debug_str        0x000000         0x14
+.debug_str        0x000000         0x41
  *(.debug_str)
  .debug_str       0x000000         0x14 build/default/production/newmainXC16.o
+ .debug_str       0x000014         0x2d build/default/production/device.o
 
 .debug_loc
  *(.debug_loc)
@@ -287,18 +304,22 @@ __FALTREG
  *(.debug_macinfo)
 
 .debug_pubnames
-                  0x000000         0x1b
+                  0x000000         0xa8
  *(.debug_pubnames)
  .debug_pubnames
                   0x000000         0x1b build/default/production/newmainXC16.o
+ .debug_pubnames
+                  0x00001b         0x8d build/default/production/device.o
 
 .debug_ranges
  *(.debug_ranges)
 
-.debug_aranges    0x000000         0x18
+.debug_aranges    0x000000         0x30
  *(.debug_aranges)
  .debug_aranges
                   0x000000         0x18 build/default/production/newmainXC16.o
+ .debug_aranges
+                  0x000018         0x18 build/default/production/device.o
                     0x0000                  WREG0 = 0x0
                     0x0000                  _WREG0 = 0x0
                     0x0002                  WREG1 = 0x2
@@ -1616,18 +1637,22 @@ LOAD FSEC
 LOAD default_isr
 
 .debug_pubtypes
-                  0x000018         0x50
+                  0x000030         0xf9
  .debug_pubtypes
-                  0x000018         0x50 build/default/production/newmainXC16.o
+                  0x000030         0x50 build/default/production/newmainXC16.o
+ .debug_pubtypes
+                  0x000080         0xa9 build/default/production/device.o
 
 __c30_signature
-                  0x000068         0x12
+                  0x000129         0x18
  __c30_signature
-                  0x000068          0x6 build/default/production/newmainXC16.o
+                  0x000129          0x6 build/default/production/newmainXC16.o
  __c30_signature
-                  0x00006e          0x6 c:/program files (x86)/microchip/xc16/v1.31/bin/bin/../../lib\liblega-pic30-elf.a(crt0_extendedep.o)
+                  0x00012f          0x6 build/default/production/device.o
  __c30_signature
-                  0x000074          0x6 c:/program files (x86)/microchip/xc16/v1.31/bin/bin/../../lib\liblega-pic30-elf.a(data_init_extended.o)
+                  0x000135          0x6 c:/program files (x86)/microchip/xc16/v1.31/bin/bin/../../lib\liblega-pic30-elf.a(crt0_extendedep.o)
+ __c30_signature
+                  0x00013b          0x6 c:/program files (x86)/microchip/xc16/v1.31/bin/bin/../../lib\liblega-pic30-elf.a(data_init_extended.o)
 
 .config_CTXT2     0x02abc4          0x2
  .config_CTXT2    0x02abc4          0x2 build/default/production/newmainXC16.o
@@ -1681,6 +1706,12 @@ __c30_signature
 .config_BSLIM     0x02ab90          0x2
  .config_BSLIM    0x02ab90          0x2 build/default/production/newmainXC16.o
 
-.text             0x000300         0x1a
- .text            0x000300         0x1a build/default/production/newmainXC16.o
-                  0x000300                  _main
+.text             0x000300         0x8e
+ .text            0x000300         0x72 build/default/production/device.o
+                  0x000300                  _device_initialize
+                  0x000308                  _device_oscInit
+                  0x000330                  _device_setOscillator
+                  0x000362                  _device_disableInterrupts
+                  0x00036a                  _device_enableInterrupts
+ .text            0x000372         0x1c build/default/production/newmainXC16.o
+                  0x000372                  _main

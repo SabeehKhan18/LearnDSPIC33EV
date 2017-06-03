@@ -82,20 +82,23 @@
 
 int main(void) {
     
+    device_initialize();
+    
     // Set TRIS and PORT B to zeros
-    TRISB = 0;
-    PORTB = 0x00;
+    TRISB = 0x0;
+    PORTB = 0x0;
 
     // Set RB6 as INPUT pin
-    // TRISB = TRISB | (1 << 6);
     TRISBbits.TRISB6 = 1;
     
+    // Main Loop
     while (1) {
-    
-       // PORTB = PORTB | (1 << 7);
-       PORTBbits.RB7 = 1;
-
-    }
-
-    
+ 
+        // Check if the button was pressed, if so turn on the LED
+        if (PORTBbits.RB6 == 0) {
+            PORTBbits.RB7 = 1;
+        } else {
+            PORTBbits.RB7 = 0;
+        }
+    }   
 }
