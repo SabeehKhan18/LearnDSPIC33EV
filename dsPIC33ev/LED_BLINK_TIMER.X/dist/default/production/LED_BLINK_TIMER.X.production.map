@@ -81,10 +81,10 @@ Program Memory  [Origin = 0x200, Length = 0x2a980]
 section                    address   length (PC units)   length (bytes) (dec)
 -------                    -------   -----------------   --------------------
 .text                        0x200               0x100           0x180  (384)
-.text                        0x300                0xe8           0x15c  (348)
-.dinit                       0x3e8                 0x8             0xc  (12)
+.text                        0x300                0xd4           0x13e  (318)
+.dinit                       0x3d4                 0x8             0xc  (12)
 
-                 Total program memory used (bytes):          0x2e8  (744) <1%
+                 Total program memory used (bytes):          0x2ca  (714) <1%
 
 
 Ivt Memory  [Origin = 0x4, Length = 0x1fc]
@@ -125,33 +125,33 @@ External Symbols in Program Memory (by address):
 
                   0x000200                  __resetPRI
                   0x00023c                  __psv_init
-                  0x000248                  __data_init_extended
                   0x000248                  __data_init
+                  0x000248                  __data_init_extended
                   0x0002fa                  __DefaultInterrupt
-                  0x000300                  _main
-                  0x000332                  __T1Interrupt
-                  0x000376                  _device_initialize
-                  0x00037e                  _device_oscInit
-                  0x0003a6                  _device_setOscillator
-                  0x0003d8                  _device_disableInterrupts
-                  0x0003e0                  _device_enableInterrupts
+                  0x000300                  _device_initialize
+                  0x000308                  _device_oscInit
+                  0x000330                  _device_setOscillator
+                  0x000362                  _device_disableInterrupts
+                  0x00036a                  _device_enableInterrupts
+                  0x000372                  _main
+                  0x0003a0                  __T1Interrupt
                   0x02ab80                  __FSEC.sec
 
 External Symbols in Program Memory (by name):
 
                   0x0002fa                  __DefaultInterrupt
                   0x02ab80                  __FSEC.sec
-                  0x000332                  __T1Interrupt
+                  0x0003a0                  __T1Interrupt
                   0x000248                  __data_init
                   0x000248                  __data_init_extended
                   0x00023c                  __psv_init
                   0x000200                  __resetPRI
-                  0x0003d8                  _device_disableInterrupts
-                  0x0003e0                  _device_enableInterrupts
-                  0x000376                  _device_initialize
-                  0x00037e                  _device_oscInit
-                  0x0003a6                  _device_setOscillator
-                  0x000300                  _main
+                  0x000362                  _device_disableInterrupts
+                  0x00036a                  _device_enableInterrupts
+                  0x000300                  _device_initialize
+                  0x000308                  _device_oscInit
+                  0x000330                  _device_setOscillator
+                  0x000372                  _main
 
 Memory Configuration
 
@@ -295,15 +295,15 @@ __FALTREG
  .debug_abbrev    0x000000        0x101 build/default/production/device.o
  .debug_abbrev    0x000101        0x109 build/default/production/newmainXC16.o
 
-.debug_line       0x000000        0x16a
+.debug_line       0x000000        0x168
  *(.debug_line)
  .debug_line      0x000000         0xb6 build/default/production/device.o
- .debug_line      0x0000b6         0xb4 build/default/production/newmainXC16.o
+ .debug_line      0x0000b6         0xb2 build/default/production/newmainXC16.o
 
-.debug_frame      0x000000         0xfe
+.debug_frame      0x000000         0xf4
  *(.debug_frame)
  .debug_frame     0x000000         0xa0 build/default/production/device.o
- .debug_frame     0x0000a0         0x5e build/default/production/newmainXC16.o
+ .debug_frame     0x0000a0         0x54 build/default/production/newmainXC16.o
 
 .debug_str        0x000000         0x68
  *(.debug_str)
@@ -1729,16 +1729,16 @@ __c30_signature
  .ivt._T1Interrupt
                   0x00001a          0x2 build/default/production/newmainXC16.o
 
-.text             0x000300         0xe8
- .text            0x000300         0x76 build/default/production/newmainXC16.o
-                  0x000300                  _main
-                  0x000332                  __T1Interrupt
- .text            0x000376         0x72 build/default/production/device.o
-                  0x000376                  _device_initialize
-                  0x00037e                  _device_oscInit
-                  0x0003a6                  _device_setOscillator
-                  0x0003d8                  _device_disableInterrupts
-                  0x0003e0                  _device_enableInterrupts
+.text             0x000300         0xd4
+ .text            0x000300         0x72 build/default/production/device.o
+                  0x000300                  _device_initialize
+                  0x000308                  _device_oscInit
+                  0x000330                  _device_setOscillator
+                  0x000362                  _device_disableInterrupts
+                  0x00036a                  _device_enableInterrupts
+ .text            0x000372         0x62 build/default/production/newmainXC16.o
+                  0x000372                  _main
+                  0x0003a0                  __T1Interrupt
 
-.dinit            0x0003e8          0x8
- .dinit           0x0003e8          0x8 data_init
+.dinit            0x0003d4          0x8
+ .dinit           0x0003d4          0x8 data_init
