@@ -274,10 +274,10 @@ __FALTREG
 .comment
  *(.comment)
 
-.debug_info       0x000000       0x15e8
+.debug_info       0x000000       0x160a
  *(.debug_info)
  .debug_info      0x000000        0x807 build/default/production/device.o
- .debug_info      0x000807        0xde1 build/default/production/newmainXC16.o
+ .debug_info      0x000807        0xe03 build/default/production/newmainXC16.o
  *(.gnu.linkonce.wi.*)
 
 .debug_abbrev     0x000000        0x1e8
@@ -285,10 +285,10 @@ __FALTREG
  .debug_abbrev    0x000000        0x101 build/default/production/device.o
  .debug_abbrev    0x000101         0xe7 build/default/production/newmainXC16.o
 
-.debug_line       0x000000        0x163
+.debug_line       0x000000        0x164
  *(.debug_line)
  .debug_line      0x000000         0xb6 build/default/production/device.o
- .debug_line      0x0000b6         0xad build/default/production/newmainXC16.o
+ .debug_line      0x0000b6         0xae build/default/production/newmainXC16.o
 
 .debug_frame      0x000000         0xfa
  *(.debug_frame)

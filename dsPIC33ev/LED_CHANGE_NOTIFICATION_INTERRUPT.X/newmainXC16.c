@@ -84,8 +84,9 @@
 int main(void) {
     
     device_initialize();
-    
-    // Set TRIS and PORT B to zeros
+
+    // Set TRIS, PORT, and ANSEL B to zeros
+    ANSELB = 0x0;
     TRISB = 0x0;
     PORTB = 0x0;
 
@@ -100,7 +101,7 @@ int main(void) {
     
     // Set interrupt priority
     IPC4bits.CNIP = 3;
-    
+   
     // Enable change notification on RB6
     CNENBbits.CNIEB6 = 1;
     
@@ -109,6 +110,9 @@ int main(void) {
     
     // Reset change notification interrupt
     IFS1bits.CNIF = 0;
+    
+    while (1);
+    return 0;
     
 }
 
