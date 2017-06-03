@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<project>
+  <executable name="dist/default/production/SimpleUART.X.production.elf">
+    <memory name="data">
+      <units>bytes</units>
+      <length>16384</length>
+      <used>0</used>
+      <free>16384</free>
+    </memory>
+    <memory name="program">
+      <units>bytes</units>
+      <length>261696</length>
+      <used>726</used>
+      <free>260970</free>
+    </memory>
+  </executable>
+</project>
