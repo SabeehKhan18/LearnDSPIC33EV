@@ -85,7 +85,8 @@ int main(void) {
     
     device_initialize();
     
-    // Set TRIS and PORT B to zeros
+    // Set TRIS, PORT, and ANSEL B to zeros
+    ANSELB = 0x0;
     TRISB = 0x0;
     PORTB = 0x0;
 
