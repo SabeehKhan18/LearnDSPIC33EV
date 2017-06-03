@@ -95,14 +95,30 @@ int main(void) {
     // Enable internal pull up resistor on RB6
     CNPUBbits.CNPUB6 = 1;
     
-    // Main Loop
-    while (1) {
+    // Enable interrupts
+    INTCON2bits.GIE = 1;
+    
+    // Enable change notification on RB6
+    CNENBbits.CNIEB6 = 1;
+
+    // Enable change notification interrupts
+    IEC1bits.CNIE = 1;
+    
+    // Reset change notification interrupt
+    IFS1bits.CNIF = 0;
+    
+}
+
+void __attribute__((__interrupt__)) _CNInterrupt(void) {
  
-        // Check if the button was pressed, if so turn on the LED
-        if (PORTBbits.RB6 == 0) {
-            PORTBbits.RB7 = 1;
-        } else {
-            PORTBbits.RB7 = 0;
-        }
-    }   
+  // Check if the button was pressed, if so turn on the LED
+    if (PORTBbits.RB6 == 0) {
+        PORTBbits.RB7 = 0;
+    } else {
+        PORTBbits.RB7 = 1;
+    }
+        
+    // Reset change notification interrupt
+    IFS1bits.CNIF = 0;
+
 }
