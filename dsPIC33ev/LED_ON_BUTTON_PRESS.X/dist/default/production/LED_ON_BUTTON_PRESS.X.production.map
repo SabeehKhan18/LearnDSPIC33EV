@@ -271,10 +271,10 @@ __FALTREG
 .comment
  *(.comment)
 
-.debug_info       0x000000        0xc7b
+.debug_info       0x000000        0xc7f
  *(.debug_info)
- .debug_info      0x000000        0x482 build/default/production/newmainXC16.o
- .debug_info      0x000482        0x7f9 build/default/production/device.o
+ .debug_info      0x000000        0x484 build/default/production/newmainXC16.o
+ .debug_info      0x000484        0x7fb build/default/production/device.o
  *(.gnu.linkonce.wi.*)
 
 .debug_abbrev     0x000000        0x1a9

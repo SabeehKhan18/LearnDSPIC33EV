@@ -1,78 +1,40 @@
-/* Microchip Technology Inc. and its subsidiaries.  You may use this software 
- * and any derivatives exclusively with Microchip products. 
- * 
- * THIS SOFTWARE IS SUPPLIED BY MICROCHIP "AS IS".  NO WARRANTIES, WHETHER 
- * EXPRESS, IMPLIED OR STATUTORY, APPLY TO THIS SOFTWARE, INCLUDING ANY IMPLIED 
- * WARRANTIES OF NON-INFRINGEMENT, MERCHANTABILITY, AND FITNESS FOR A 
- * PARTICULAR PURPOSE, OR ITS INTERACTION WITH MICROCHIP PRODUCTS, COMBINATION 
- * WITH ANY OTHER PRODUCTS, OR USE IN ANY APPLICATION. 
- *
- * IN NO EVENT WILL MICROCHIP BE LIABLE FOR ANY INDIRECT, SPECIAL, PUNITIVE, 
- * INCIDENTAL OR CONSEQUENTIAL LOSS, DAMAGE, COST OR EXPENSE OF ANY KIND 
- * WHATSOEVER RELATED TO THE SOFTWARE, HOWEVER CAUSED, EVEN IF MICROCHIP HAS 
- * BEEN ADVISED OF THE POSSIBILITY OR THE DAMAGES ARE FORESEEABLE.  TO THE 
- * FULLEST EXTENT ALLOWED BY LAW, MICROCHIP'S TOTAL LIABILITY ON ALL CLAIMS 
- * IN ANY WAY RELATED TO THIS SOFTWARE WILL NOT EXCEED THE AMOUNT OF FEES, IF 
- * ANY, THAT YOU HAVE PAID DIRECTLY TO MICROCHIP FOR THIS SOFTWARE.
- *
- * MICROCHIP PROVIDES THIS SOFTWARE CONDITIONALLY UPON YOUR ACCEPTANCE OF THESE 
- * TERMS. 
+#ifndef	_I2C_H_
+#define _I2C_H_
+
+/*
+ *	SDA (data) and SCL (clock) bits
+ *	
+ *	Special note!!!
+ *	
+ *	If the clock and data lines are in the same port, you will need
+ *	to beware of the Read/Modify/Write issue in the PIC - since
+ *	a bit set or clear on any one bit in a port will read and write
+ *	back all other bits. 
  */
 
-/* 
- * File:   
- * Author: 
- * Comments:
- * Revision history: 
- */
+#ifndef _XTAL_FREQ
+ #define _XTAL_FREQ 8000000
+#endif
 
-// This is a guard condition so that contents of this file are not included
-// more than once.  
-#ifndef XC_HEADER_TEMPLATE_H
-#define	XC_HEADER_TEMPLATE_H
+#include <xc.h>
 
-#include <xc.h> // include processor files - each processor file is guarded.  
 
-// TODO Insert appropriate #include <>
+#define I2C_READ	0x01		/* read bit used with address */
+#define I2C_WRITE	0x00		/* write bit used with address */
 
-// TODO Insert declarations
+#define I2C_ERROR	(-1)
+#define I2C_NACK	1		/* SendNack: failed to receive */
+#define I2C_MORE	0		/* SendAck: send more bytes */
+#define I2C_LAST	1		/* SendNack: receive complete */
 
-// Comment a function and leverage automatic documentation with slash star star
-/**
-    <p><b>Function prototype:</b></p>
-  
-    <p><b>Summary:</b></p>
+#define i2c_WriteTo(address)	I2C_SendAddress((address), I2C_WRITE)
+#define i2c_ReadFrom(address)	I2C_SendAddress((address), I2C_READ)
 
-    <p><b>Description:</b></p>
-
-    <p><b>Precondition:</b></p>
-
-    <p><b>Parameters:</b></p>
-
-    <p><b>Returns:</b></p>
-
-    <p><b>Example:</b></p>
-    <code>
- 
-    </code>
-
-    <p><b>Remarks:</b></p>
- */
-// TODO Insert declarations or function prototypes (right here) to leverage 
-// live documentation
-#define WRITE(ADDR) (ADDR << 1) 
-#define READ(ADDR) (ADDR << 1) | 0
-
-typedef struct {
-    char sendLen; // hi
-    char *sendData;
-    char recvLen;
-    char *recvData;
-} I2CTransaction;
-
-void i2cInit(void);
-
-void i2ctransmit(I2CTransaction *trans);
-
-#endif	/* XC_HEADER_TEMPLATE_H */
-
+extern unsigned char    I2C_SendAddress(unsigned char, unsigned char);
+extern unsigned char    I2C_SendByte(unsigned char);
+extern int		I2C_ReadByte(unsigned char);
+extern void 		I2C_Start(void);
+extern void		I2C_Restart(void);
+extern void		I2C_Stop(void);
+extern void 		I2C_Initialize(void);
+#endif			/* _I2C_H_ */

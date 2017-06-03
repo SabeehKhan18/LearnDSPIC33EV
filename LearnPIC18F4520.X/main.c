@@ -1,83 +1,70 @@
-/*
- * File:   main.c
- * Author: khansa
- *
- * Created on April 4, 2017, 2:16 AM
- */
 
-// PIC18F4520 Configuration Bit Settings
+// PIC16F887 Configuration Bit Settings
 
 // 'C' source line config statements
 
-// CONFIG1H
-#pragma config OSC = INTIO67    // Oscillator Selection bits (Internal oscillator block, port function on RA6 and RA7)
-#pragma config FCMEN = OFF      // Fail-Safe Clock Monitor Enable bit (Fail-Safe Clock Monitor disabled)
-#pragma config IESO = OFF       // Internal/External Oscillator Switchover bit (Oscillator Switchover mode disabled)
+// CONFIG1
+#pragma config FOSC = HS        // Oscillator Selection bits (XT oscillator: Crystal/resonator on RA6/OSC2/CLKOUT and RA7/OSC1/CLKIN)
+#pragma config WDTE = OFF       // Watchdog Timer Enable bit (WDT disabled and can be enabled by SWDTEN bit of the WDTCON register)
+#pragma config PWRTE = OFF      // Power-up Timer Enable bit (PWRT disabled)
+#pragma config MCLRE = ON       // RE3/MCLR pin function select bit (RE3/MCLR pin function is MCLR)
+#pragma config CP = OFF         // Code Protection bit (Program memory code protection is disabled)
+#pragma config CPD = OFF        // Data Code Protection bit (Data memory code protection is disabled)
+#pragma config BOREN = OFF      // Brown Out Reset Selection bits (BOR disabled)
+#pragma config IESO = OFF       // Internal External Switchover bit (Internal/External Switchover mode is disabled)
+#pragma config FCMEN = OFF      // Fail-Safe Clock Monitor Enabled bit (Fail-Safe Clock Monitor is disabled)
+#pragma config LVP = OFF        // Low Voltage Programming Enable bit (RB3 pin has digital I/O, HV on MCLR must be used for programming)
 
-// CONFIG2L
-#pragma config PWRT = OFF       // Power-up Timer Enable bit (PWRT disabled)
-#pragma config BOREN = SBORDIS  // Brown-out Reset Enable bits (Brown-out Reset enabled in hardware only (SBOREN is disabled))
-#pragma config BORV = 3         // Brown Out Reset Voltage bits (Minimum setting)
-
-// CONFIG2H
-#pragma config WDT = OFF        // Watchdog Timer Enable bit (WDT disabled (control is placed on the SWDTEN bit))
-#pragma config WDTPS = 32768    // Watchdog Timer Postscale Select bits (1:32768)
-
-// CONFIG3H
-#pragma config CCP2MX = PORTC   // CCP2 MUX bit (CCP2 input/output is multiplexed with RC1)
-#pragma config PBADEN = OFF     // PORTB A/D Enable bit (PORTB<4:0> pins are configured as digital I/O on Reset)
-#pragma config LPT1OSC = OFF    // Low-Power Timer1 Oscillator Enable bit (Timer1 configured for higher power operation)
-#pragma config MCLRE = ON       // MCLR Pin Enable bit (MCLR pin enabled; RE3 input pin disabled)
-
-// CONFIG4L
-#pragma config STVREN = OFF     // Stack Full/Underflow Reset Enable bit (Stack full/underflow will not cause Reset)
-#pragma config LVP = OFF        // Single-Supply ICSP Enable bit (Single-Supply ICSP disabled)
-#pragma config XINST = OFF      // Extended Instruction Set Enable bit (Instruction set extension and Indexed Addressing mode disabled (Legacy mode))
-
-// CONFIG5L
-#pragma config CP0 = OFF        // Code Protection bit (Block 0 (000800-001FFFh) not code-protected)
-#pragma config CP1 = OFF        // Code Protection bit (Block 1 (002000-003FFFh) not code-protected)
-#pragma config CP2 = OFF        // Code Protection bit (Block 2 (004000-005FFFh) not code-protected)
-#pragma config CP3 = OFF        // Code Protection bit (Block 3 (006000-007FFFh) not code-protected)
-
-// CONFIG5H
-#pragma config CPB = OFF        // Boot Block Code Protection bit (Boot block (000000-0007FFh) not code-protected)
-#pragma config CPD = OFF        // Data EEPROM Code Protection bit (Data EEPROM not code-protected
-// CONFIG6L
-#pragma config WRT0 = OFF       // Write Protection bit (Block 0 (000800-001FFFh) not write-protected)
-#pragma config WRT1 = OFF       // Write Protection bit (Block 1 (002000-003FFFh) not write-protected)
-#pragma config WRT2 = OFF       // Write Protection bit (Block 2 (004000-005FFFh) not write-protected)
-#pragma config WRT3 = OFF       // Write Protection bit (Block 3 (006000-007FFFh) not write-protected)
-
-// CONFIG6H
-#pragma config WRTC = OFF       // Configuration Register Write Protection bit (Configuration registers (300000-3000FFh) not write-protected)
-#pragma config WRTB = OFF       // Boot Block Write Protection bit (Boot block (000000-0007FFh) not write-protected)
-#pragma config WRTD = OFF       // Data EEPROM Write Protection bit (Data EEPROM not write-protected)
-
-// CONFIG7L
-#pragma config EBTR0 = OFF      // Table Read Protection bit (Block 0 (000800-001FFFh) not protected from table reads executed in other blocks)
-#pragma config EBTR1 = OFF      // Table Read Protection bit (Block 1 (002000-003FFFh) not protected from table reads executed in other blocks)
-#pragma config EBTR2 = OFF      // Table Read Protection bit (Block 2 (004000-005FFFh) not protected from table reads executed in other blocks)
-#pragma config EBTR3 = OFF      // Table Read Protection bit (Block 3 (006000-007FFFh) not protected from table reads executed in other blocks)
-
-// CONFIG7H
-#pragma config EBTRB = OFF      // Boot Block Table Read Protection bit (Boot block (000000-0007FFh) not protected from table reads executed in other blocks)
+// CONFIG2
+#pragma config BOR4V = BOR40V   // Brown-out Reset Selection bit (Brown-out Reset set to 4.0V)
+#pragma config WRT = OFF        // Flash Program Memory Self Write Enable bits (Write protection off)
 
 // #pragma config statements should precede project file includes.
 // Use project enums instead of #define for ON and OFF.
 
 #include <xc.h>
+
 #include "i2c.h"
-#include "tmp101.h"
+unsigned int heat;
+
+const unsigned char list1[] = {50,25,13,6};
+const unsigned char list2[] = {128,64,32,16};
+
+char get_temperature(unsigned char TMP101_address, char *temp, char *temp_rem) {
+    I2C_Start(); // Generate start condition
+    while (i2c_WriteTo(TMP101_address)); // Send ?Write to Address? byte to all slaves on I2C bus
+    // This routine returns a nonzero value if the addressed
+    // TMP101 fails to acknowledge after the master sends out
+    // the ?Write to address? byte, so the program will hang up in
+    // this loop if there is no response from the TMP101,
+    // repeating this step until an acknowledge is received.
+    I2C_SendByte(0x00); // Sets pointer register to 00 (Temperature register) for
+    //the addressed TMP101. (See Table 2 TMP101 Datasheet)
+    I2C_Restart(); // Generate restart condition between write and read operations
+    i2c_ReadFrom(TMP101_address); // Sends ?Read from Address? byte to TMP101
+    // Next two frames from TMP101 contain temperature as
+    // signed 12-bit value
+    *temp = I2C_ReadByte(I2C_MORE); //get upper 8 bits of temperature (integer portion)
+    *temp_rem = I2C_ReadByte(I2C_LAST); //get lower 4 bits temperature (fractional portion)
+    I2C_Stop(); // Generate stop condition
+}
 
 void main(void) {
-    OSCCONbits.IRCF = 0b110; // 4 MHz
-    i2cInit();
-    initTMP101();
-    unsigned int temp;
-    int i = 0;
+    ANSEL = ANSELH = 0;
+    char temp, temp_rem, sign_char, dig0_char, dig1_char, dig2_char;
+    I2C_Initialize();
+
     while (1) {
-        i++;
-        temp = getRawTemp();
-    }   
+        get_temperature(0x90, &temp, &temp_rem);
+//        heat = temp;
+//        char k;
+//        char heatLOW = 0;
+//        for (k = 0; k < 4; k++){        // Convert lower four bits
+//            if (temp_rem > list2[k]){
+//                temp_rem = temp_rem - list2[k];
+//                heatLOW += list1[k];
+//            }
+//        }
+//        heat = (heat * 100) + heatLOW;
+    }
 }

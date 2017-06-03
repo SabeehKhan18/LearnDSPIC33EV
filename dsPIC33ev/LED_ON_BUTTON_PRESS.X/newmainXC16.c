@@ -39,7 +39,7 @@
 // FWDT
 #pragma config WDTPOST = PS32768        // Watchdog Timer Postscaler Bits (1:32,768)
 #pragma config WDTPRE = PR128           // Watchdog Timer Prescaler Bit (1:128)
-#pragma config FWDTEN = ON              // Watchdog Timer Enable Bits (WDT Enabled)
+#pragma config FWDTEN = OFF              // Watchdog Timer Enable Bits (WDT Enabled)
 #pragma config WINDIS = OFF             // Watchdog Timer Window Enable Bit (Watchdog timer in Non-Window Mode)
 #pragma config WDTWIN = WIN25           // Watchdog Window Select Bits (WDT Window is 25% of WDT period)
 
