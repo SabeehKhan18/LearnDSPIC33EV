@@ -3,15 +3,15 @@
     <type>com.microchip.mplab.nbide.embedded.makeproject</type>
     <configuration>
         <data xmlns="http://www.netbeans.org/ns/make-project/1">
-            <name>PIC Learning</name>
-            <creation-uuid>7fbe93f6-0aa4-4ce2-99f8-e1ad2f6c3390</creation-uuid>
+            <name>LED_ON_BUTTON_PRESS</name>
+            <creation-uuid>7853a766-aa19-4c90-8598-c561aa6fb081</creation-uuid>
             <make-project-type>0</make-project-type>
-            <c-extensions/>
+            <c-extensions>c</c-extensions>
             <cpp-extensions/>
             <header-extensions/>
             <asminc-extensions/>
+            <sourceEncoding>ISO-8859-1</sourceEncoding>
             <make-dep-projects/>
-            <sourceEncoding>UTF-8</sourceEncoding>
         </data>
     </configuration>
 </project>
