@@ -114,12 +114,12 @@ int main(void) {
 
 void __attribute__((__interrupt__)) _CNInterrupt(void) {
  
-  // Check if the button was pressed, if so turn on the LED
-    if (PORTBbits.RB6 == 0) {
-        PORTBbits.RB7 = 0;
-    } else {
-        PORTBbits.RB7 = 1;
-    }
+    // Check if the button was pressed, if so turn on the LED
+        if (PORTBbits.RB6 == 0) {
+            PORTBbits.RB7 = 1;
+        } else {
+            PORTBbits.RB7 = 0;
+        }
         
     // Reset change notification interrupt
     IFS1bits.CNIF = 0;
