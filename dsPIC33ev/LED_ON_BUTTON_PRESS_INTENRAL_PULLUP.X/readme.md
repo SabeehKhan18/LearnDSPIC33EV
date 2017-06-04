@@ -9,4 +9,4 @@ https://goo.gl/photos/esVhZGahwpCzMy2i9
 
 ## Schematic
 
-![alt text](https://github.com/SabeehKhan18/RandomMicrocontrollerProjects/blob/master/dsPIC33ev/LED_ON_BUTTON_PRESS_INTENRAL_PULLUP.X/LED_ON_BUTTON_PRESS_INTERNAL_PULLUP_SCHEMATIC.png?raw=true)
+![alt text](https://github.com/SabeehKhan18/RandomMicrocontrollerProjects/blob/master/dsPIC33ev/LED_ON_BUTTON_PRESS_INTENRAL_PULLUP.X/schematic.png?raw=true)
