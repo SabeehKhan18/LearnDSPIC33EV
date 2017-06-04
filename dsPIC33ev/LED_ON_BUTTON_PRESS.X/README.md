@@ -1,6 +1,12 @@
+# LED_ON_BUTTON_PRESS
+
+## About
+
 This project demonstrates turning on an LED on pin RB7 by a button press on pin RB6 with external pullups.
 
-Video - https://goo.gl/photos/smn6Lu7tUbMRTASM8
+## Video
+
+https://goo.gl/photos/smn6Lu7tUbMRTASM8
 
 ## Schematic
 
