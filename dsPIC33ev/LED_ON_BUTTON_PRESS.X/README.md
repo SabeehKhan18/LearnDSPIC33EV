@@ -10,4 +10,4 @@ https://goo.gl/photos/smn6Lu7tUbMRTASM8
 
 ## Schematic
 
-![alt text](https://github.com/SabeehKhan18/RandomMicrocontrollerProjects/blob/master/dsPIC33ev/.png?raw=true)
+![alt text](https://github.com/SabeehKhan18/RandomMicrocontrollerProjects/blob/master/dsPIC33ev/LED_ON_BUTTON_PRESS.X/schematic.png?raw=true)
