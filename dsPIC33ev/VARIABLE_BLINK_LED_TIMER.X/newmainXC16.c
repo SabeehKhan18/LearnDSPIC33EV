@@ -2,9 +2,9 @@
  * File:   newmainXC16.c
  * Author: George Main IV
  *
- * This project will turn on and off an LED using a timer
+ * This project will turn on and off an LED using a timer and change the period using a potentiometer
  * 
- * Created on June 3, 2017, 4:14 PM
+ * Created on June 5, 2017, 6:56 PM
  */
 
 // DSPIC33EV256GM102 Configuration Bit Settings
