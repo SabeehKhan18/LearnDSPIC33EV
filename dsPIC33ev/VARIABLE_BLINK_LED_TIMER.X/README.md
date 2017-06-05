@@ -10,4 +10,4 @@ https://goo.gl/photos/Touve17KDojNgUSx9
 
 ## Schematic
 
-![alt text](https://github.com/SabeehKhan18/RandomMicrocontrollerProjects/blob/master/dsPIC33ev/VARIABLE_BLINK_LED_TIMER.X/schematic.png?raw=true)
+![alt text](https://raw.githubusercontent.com/SabeehKhan18/RandomMicrocontrollerProjects/b0cbf703c2a1f27f6bc121319633150b178a7972/dsPIC33ev/VARIABLE_BLINK_LED_TIMER.X/schematic.png)
