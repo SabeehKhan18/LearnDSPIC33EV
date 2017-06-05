@@ -62,14 +62,50 @@
 int main(void) {
     
     device_initialize();
-
-    // Set TRIS, PORT, and ANSEL B to zeros
+    device_enableInterrupts();
+    
+    // Set TRIS, PORT, and ANSEL A and B to zeros
+    ANSELA = 0x00;
     ANSELB = 0x00;
+    TRISA = 0x00;
     TRISB = 0x00;
+    PORTA = 0x00;
     PORTB = 0x00;
     
-    // Enable interrupts
-    INTCON2bits.GIE = 1;
+    // Set RB1 as an analog input
+    ANSELBbits.ANSB0 = 1;
+    TRISBbits.TRISB0 = 1;
+    
+    // Set RA0 as an analog input
+    ANSELAbits.ANSA0 = 1;
+    TRISAbits.TRISA0 = 1;
+    
+    // Reset AD1CON1
+    AD1CON1 = 0x00;
+    
+    // Set the ADC Operational Mode to 12 bit, Single Channel ADC
+    AD1CON1bits.AD12B = 1;
+    
+    // Set voltage reference
+    AD1CON2bits.VCFG = 0x000;
+    
+    // ADC Clock Selection
+    AD1CON3 = 0x000F;
+    
+    AD1CHS0 = 0x0005;
+    AD1CHS123 = 0x0000;
+    AD1CSSH = 0x0000;
+    AD1CSSL = 0x0000;
+    
+    // Set AN2 as input
+    AD1CHS0bits.CH0SA = 2;
+    AD1CHS0bits.CH0NA = 0;
+        
+    // Turn on the ADC
+    AD1CON1bits.ADON = 1;
+    
+    // Delay so ADC can stabilize
+    Delay_us(20);
     
     // Reset timer 1
     T1CON = 0x00;
@@ -103,20 +139,50 @@ int main(void) {
 // Counter
 int i = 0;
 
+// Delay time
+int value = 1000;
+
 void __attribute__((__interrupt__, no_auto_psv)) _T1Interrupt(void)
 {
     // Increment counter
     i++;
     
     // If 100 cycles have occurred
-    if (i == 1000) { 
+    if (i > value) { 
         // Reset counter
         i = 0;
+        
         // Switch LED state
         PORTBbits.RB7 = ~PORTBbits.RB7;
+        
+        // Example 16-1: http://ww1.microchip.com/downloads/en/DeviceDoc/70621c.pdf
+        
+        // Start Sampling
+        AD1CON1bits.SAMP = 1;
+        
+        // Wait 10 us for sampling
+        Delay_us(10);
+        
+        // Start conversion
+        AD1CON1bits.SAMP = 0;  
+        
+        // Wait for conversion to complete
+        while (!AD1CON1bits.DONE);  
+        
+        // Read the AN2 conversion result
+        value = ADC1BUF0 / 5;      
+        
     }
     
     // Reset timer 1 interrupt
     IFS0bits.T1IF = 0;
     
+}
+
+void Delay_us(unsigned int delay) {
+    for (i = 0; i < delay; i++)
+    {
+    __asm__ volatile ("repeat #39");
+    __asm__ volatile ("nop");
+    }
 }

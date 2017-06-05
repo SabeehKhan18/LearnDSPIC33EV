@@ -3,15 +3,15 @@
     <type>com.microchip.mplab.nbide.embedded.makeproject</type>
     <configuration>
         <data xmlns="http://www.netbeans.org/ns/make-project/1">
-            <name>VARIABLE_LED_BLINK_TIMER</name>
-            <creation-uuid>2041221a-e3ea-4eab-b440-790c79547a7c</creation-uuid>
+            <name>VARIABLE_BLINK_LED_TIMER</name>
+            <creation-uuid>194736d0-2ae1-4240-8be1-e83224f3347b</creation-uuid>
             <make-project-type>0</make-project-type>
-            <c-extensions/>
+            <c-extensions>c</c-extensions>
             <cpp-extensions/>
-            <header-extensions/>
+            <header-extensions>h</header-extensions>
             <asminc-extensions/>
+            <sourceEncoding>ISO-8859-1</sourceEncoding>
             <make-dep-projects/>
-            <sourceEncoding>UTF-8</sourceEncoding>
         </data>
     </configuration>
 </project>
