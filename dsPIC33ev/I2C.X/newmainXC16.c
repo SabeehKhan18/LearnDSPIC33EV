@@ -65,4 +65,12 @@ int main(void) {
     device_initialize();
     device_enableInterrupts();
     
+    // Set TRIS A/B, ANSEL A/B, and PORT A/B to 0
+    TRISA = TRISB = 0x00;
+    ANSELA = ANSELB = 0x00;
+    PORTA = PORTB = 0x00;  
+    
+    // Turn on Power LED
+    PORTBbits.RB5 = 1;
+    
 }

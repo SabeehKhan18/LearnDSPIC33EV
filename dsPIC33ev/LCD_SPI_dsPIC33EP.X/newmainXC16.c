@@ -7,6 +7,52 @@
  * Created on June 16, 1:55 PM
  */
 
+
+#define BLACK 1
+#define WHITE 0
+
+#define LCDWIDTH 128
+#define LCDHEIGHT 64
+
+#define CMD_DISPLAY_OFF   0xAE
+#define CMD_DISPLAY_ON    0xAF
+
+#define CMD_SET_DISP_START_LINE  0x40
+#define CMD_SET_PAGE  0xB0
+
+#define CMD_SET_COLUMN_UPPER  0x10
+#define CMD_SET_COLUMN_LOWER  0x00
+
+#define CMD_SET_ADC_NORMAL  0xA0
+#define CMD_SET_ADC_REVERSE 0xA1
+
+#define CMD_SET_DISP_NORMAL 0xA6
+#define CMD_SET_DISP_REVERSE 0xA7
+
+#define CMD_SET_ALLPTS_NORMAL 0xA4
+#define CMD_SET_ALLPTS_ON  0xA5
+#define CMD_SET_BIAS_9 0xA2 
+#define CMD_SET_BIAS_7 0xA3
+
+#define CMD_RMW  0xE0
+#define CMD_RMW_CLEAR 0xEE
+#define CMD_INTERNAL_RESET  0xE2
+#define CMD_SET_COM_NORMAL  0xC0
+#define CMD_SET_COM_REVERSE  0xC8
+#define CMD_SET_POWER_CONTROL  0x28
+#define CMD_SET_RESISTOR_RATIO  0x20
+#define CMD_SET_VOLUME_FIRST  0x81
+#define  CMD_SET_VOLUME_SECOND  0
+#define CMD_SET_STATIC_OFF  0xAC
+#define  CMD_SET_STATIC_ON  0xAD
+#define CMD_SET_STATIC_REG  0x0
+#define CMD_SET_BOOSTER_FIRST  0xF8
+#define CMD_SET_BOOSTER_234  0
+#define  CMD_SET_BOOSTER_5  1
+#define  CMD_SET_BOOSTER_6  3
+#define CMD_NOP  0xE3
+#define CMD_TEST  0xF0
+
 // DSPIC33EP256GP502 Configuration Bit Settings
 
 // 'C' source line config statements
@@ -47,6 +93,7 @@
 #include <xc.h>
 #include <libpic30.h>
 #include <p33ep256gp502.h>
+#include <stdint.h>
 
 int main(void) {
 
@@ -56,40 +103,95 @@ int main(void) {
     // Set TRIS A/B, ANSEL A/B, and PORT A/B to 0
     TRISA = TRISB = 0x00;
     ANSELA = ANSELB = 0x00;
-    PORTA = PORTB = 0x00;
+    PORTA = PORTB = 0x00;   
+  
+      // Set A0 Low
+    PORTBbits.RB10 = 0;
+            
+    // Set /RESET High
+    PORTBbits.RB11 = 1;
     
-    /* The following code sequence shows SPI register configuration for Master mode */
+     /* The following code sequence shows SPI register configuration for Master mode */
     // Example 3-1 - http://ww1.microchip.com/downloads/en/DeviceDoc/70005185a.pdf
     
-    IFS0bits.SPI1IF = 0;            // Clear the Interrupt flag
-    IEC0bits.SPI1IE = 0;            // Disable the interrupt
+    /* The following code sequence shows SPI register configuration for Master mode */
+    IFS0bits.SPI1IF = 0; // Clear the Interrupt flag
+    IEC0bits.SPI1IE = 0; // Disable the interrupt
+    // SPI1CON1 Register Settings
+    SPI1CON1bits.DISSCK = 0; // Internal serial clock is enabled
+    SPI1CON1bits.DISSDO = 0; // SDOx pin is controlled by the module
+    SPI1CON1bits.MODE16 = 0; // Communication is 8 bits
+    SPI1CON1bits.SMP = 0; // Input data is sampled at the middle of data output time
+    SPI1CON1bits.CKE = 0; // Serial output data changes on transition from
+    // Idle clock state to active clock state
+    SPI1CON1bits.CKP = 1; // Idle state for clock is a low-level;
+    // active state is a high-level
+    SPI1CON1bits.MSTEN = 1; // Master mode enabled
+    SPI1STATbits.SPIEN = 1; // Enable SPI module
+    SPI1BUF = 0x0000; // Write data to be transmitted
+    // Interrupt Controller Settings
+    IFS0bits.SPI1IF = 0; // Clear the Interrupt flag
+    IEC0bits.SPI1IE = 1; // Enable the interrupt
+    // Init LCD
     
-    SPI1STAT = 0x00;                // Reset SPI1 Status and Control Register
-    SPI1STATbits.SPIEN = 1;         // Enable SCK1, SDO1, SDI1, and SS1 as serial port pins
+    // Set A0 Low
+    PORTBbits.RB10 = 0;
     
-    SPI1CON1 = 0x00;                // Reset SPI1 Control Register 1
-    SPI1CON1bits.DISSCK = 0;        // Internal serial clock is enabled
-    SPI1CON1bits.DISSDO = 0;        // SDOx pin is controlled by the module
-    SPI1CON1bits.MODE16 = 0;        // Communication is 8 bits
-    SPI1CON1bits.MSTEN = 1;         // Enable Master Mode
-    SPI1CON1bits.SMP = 0;           // Input data is sampled at the middle of data output time
-    SPI1CON1bits.CKE = 0;           // Serial output data changes on transition from
+    // Reset LCD
+    PORTBbits.RB11 = 0;
+    //Delay_us(500000);
+    PORTBbits.RB11 = 1;
     
-    SPI1CON1bits.CKP = 0;           // Idle state for clock is a low level; 
     
-    SPI1STATbits.SPIEN = 1;         // Enable SPI module
-    
-    IFS0bits.SPI1IF = 0;            // Clear the Interrupt flag
-    IEC0bits.SPI1IE = 1;            // Enable the interrupt
+     // LCD bias select
+    st7565_command(CMD_SET_BIAS_7);
+    // ADC select
+    st7565_command(CMD_SET_ADC_NORMAL);
+    // SHL select
+    st7565_command(CMD_SET_COM_NORMAL);
+    // Initial display line
+    st7565_command(CMD_SET_DISP_START_LINE);
 
-    while(1) {
-      while( SPI1STATbits.SPITBF )
+    // turn on voltage converter (VC=1, VR=0, VF=0)
+    st7565_command(CMD_SET_POWER_CONTROL | 0x4);
+    // wait for 50% rising
+    //Delay_us(50000);
+
+    // turn on voltage regulator (VC=1, VR=1, VF=0)
+    st7565_command(CMD_SET_POWER_CONTROL | 0x6);
+    // wait >=50ms
+    //Delay_us(50000);
+
+    // turn on voltage follower (VC=1, VR=1, VF=1)
+    st7565_command(CMD_SET_POWER_CONTROL | 0x7);
+    // wait
+    //Delay_us(100);
+    // set lcd operating voltage (regulator resistor, ref voltage resistor)
+    st7565_command(CMD_SET_RESISTOR_RATIO | 0x6);
+    st7565_command(CMD_DISPLAY_ON);
+    st7565_command(CMD_SET_ALLPTS_ON);
+    st7565_command(CMD_SET_VOLUME_FIRST);
+    st7565_command(CMD_SET_VOLUME_SECOND | (125 & 0x3f));
+    
+    
+    PORTBbits.RB5 = 1;
+ 
+
+}
+
+void st7565_command( uint8_t data)  {
+   SPI1BUF = data;
+  while (SPI2STATbits.SPITBF) { 
+
+  }
+}
+
+int i = 0;
+
+void Delay_us(unsigned int delay) {
+    for (i = 0; i < delay; i++)
     {
-
+    __asm__ volatile ("repeat #39");
+    __asm__ volatile ("nop");
     }
-    
-    SPI1BUF = 0xA5;
-     while ( SPI1STATbits.SRXMPT);
-    }
-
 }
