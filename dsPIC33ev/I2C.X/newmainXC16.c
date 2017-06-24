@@ -2,7 +2,7 @@
  * File:   newmainXC16.c
  * Author: George Main IV
  * 
- * This project will write text to an LCD
+ * This project sends data to an Arduino using I2C.
  *
  * Created on June 6, 2017, 1:59 PM
  */
@@ -73,8 +73,9 @@ int main(void) {
     // Turn on Power LED
     PORTBbits.RB5 = 1;
     
-    // Main Program Loop
     
+    
+    // Main Program Loop
     while(1) {
         
     }
