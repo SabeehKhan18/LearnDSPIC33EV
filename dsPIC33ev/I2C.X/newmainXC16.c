@@ -73,4 +73,10 @@ int main(void) {
     // Turn on Power LED
     PORTBbits.RB5 = 1;
     
+    // Main Program Loop
+    
+    while(1) {
+        
+    }
+    
 }

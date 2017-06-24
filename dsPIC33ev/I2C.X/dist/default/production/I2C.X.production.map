@@ -81,9 +81,9 @@ Program Memory  [Origin = 0x200, Length = 0x2a980]
 section                    address   length (PC units)   length (bytes) (dec)
 -------                    -------   -----------------   --------------------
 .text                        0x200               0x100           0x180  (384)
-.text                        0x300                0x7c            0xba  (186)
+.text                        0x300                0x8e            0xd5  (213)
 
-                 Total program memory used (bytes):          0x23a  (570) <1%
+                 Total program memory used (bytes):          0x255  (597) <1%
 
 
 Ivt Memory  [Origin = 0x4, Length = 0x1fc]
@@ -271,30 +271,31 @@ __FALTREG
 .comment
  *(.comment)
 
-.debug_info       0x000000        0x92d
+.debug_info       0x000000        0xb66
  *(.debug_info)
  .debug_info      0x000000        0x7e9 build/default/production/device.o
- .debug_info      0x0007e9        0x144 build/default/production/newmainXC16.o
+ .debug_info      0x0007e9        0x37d build/default/production/newmainXC16.o
  *(.gnu.linkonce.wi.*)
 
-.debug_abbrev     0x000000        0x162
+.debug_abbrev     0x000000        0x1bc
  *(.debug_abbrev)
  .debug_abbrev    0x000000        0x101 build/default/production/device.o
- .debug_abbrev    0x000101         0x61 build/default/production/newmainXC16.o
+ .debug_abbrev    0x000101         0xbb build/default/production/newmainXC16.o
 
-.debug_line       0x000000         0xf3
+.debug_line       0x000000        0x157
  *(.debug_line)
  .debug_line      0x000000         0xb6 build/default/production/device.o
- .debug_line      0x0000b6         0x3d build/default/production/newmainXC16.o
+ .debug_line      0x0000b6         0xa1 build/default/production/newmainXC16.o
 
 .debug_frame      0x000000         0xd0
  *(.debug_frame)
  .debug_frame     0x000000         0xa0 build/default/production/device.o
  .debug_frame     0x0000a0         0x30 build/default/production/newmainXC16.o
 
-.debug_str        0x000000         0x2d
+.debug_str        0x000000         0x37
  *(.debug_str)
  .debug_str       0x000000         0x2d build/default/production/device.o
+ .debug_str       0x00002d          0xa build/default/production/newmainXC16.o
 
 .debug_loc
  *(.debug_loc)
@@ -1636,22 +1637,22 @@ LOAD FSEC
 LOAD default_isr
 
 .debug_pubtypes
-                  0x000030         0xbb
+                  0x000030         0xda
  .debug_pubtypes
                   0x000030         0xa9 build/default/production/device.o
  .debug_pubtypes
-                  0x0000d9         0x12 build/default/production/newmainXC16.o
+                  0x0000d9         0x31 build/default/production/newmainXC16.o
 
 __c30_signature
-                  0x0000eb         0x18
+                  0x00010a         0x18
  __c30_signature
-                  0x0000eb          0x6 build/default/production/device.o
+                  0x00010a          0x6 build/default/production/device.o
  __c30_signature
-                  0x0000f1          0x6 build/default/production/newmainXC16.o
+                  0x000110          0x6 build/default/production/newmainXC16.o
  __c30_signature
-                  0x0000f7          0x6 c:/program files (x86)/microchip/xc16/v1.31/bin/bin/../../lib\liblega-pic30-elf.a(crt0_extendedep.o)
+                  0x000116          0x6 c:/program files (x86)/microchip/xc16/v1.31/bin/bin/../../lib\liblega-pic30-elf.a(crt0_extendedep.o)
  __c30_signature
-                  0x0000fd          0x6 c:/program files (x86)/microchip/xc16/v1.31/bin/bin/../../lib\liblega-pic30-elf.a(data_init_extended.o)
+                  0x00011c          0x6 c:/program files (x86)/microchip/xc16/v1.31/bin/bin/../../lib\liblega-pic30-elf.a(data_init_extended.o)
 
 .config_CTXT2     0x02abc4          0x2
  .config_CTXT2    0x02abc4          0x2 build/default/production/newmainXC16.o
@@ -1705,12 +1706,12 @@ __c30_signature
 .config_BSLIM     0x02ab90          0x2
  .config_BSLIM    0x02ab90          0x2 build/default/production/newmainXC16.o
 
-.text             0x000300         0x7c
+.text             0x000300         0x8e
  .text            0x000300         0x72 build/default/production/device.o
                   0x000300                  _device_initialize
                   0x000308                  _device_oscInit
                   0x000330                  _device_setOscillator
                   0x000362                  _device_disableInterrupts
                   0x00036a                  _device_enableInterrupts
- .text            0x000372          0xa build/default/production/newmainXC16.o
+ .text            0x000372         0x1c build/default/production/newmainXC16.o
                   0x000372                  _main
