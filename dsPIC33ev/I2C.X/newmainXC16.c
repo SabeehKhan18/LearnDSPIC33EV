@@ -71,9 +71,21 @@ int main(void) {
     PORTA = PORTB = 0x00;  
     
     // Turn on Power LED
-    PORTBbits.RB5 = 1;
+    PORTBbits.RB7 = 1;
     
-    
+    I2C1CON1 = 0x00;            // Reset I2C1 Control Regisetr
+    I2C1CON1bits.I2CEN = 1;     // Enable I2C Module
+    I2C1BRG = 0x7;
+    // ACKEN disabled; STRICT disabled; STREN disabled; GCEN disabled; SMEN disabled; DISSLW disabled; I2CSIDL disabled; ACKDT Sends ACK; SCLREL Holds; RSEN disabled; A10M 7 Bit; PEN disabled; RCEN disabled; SEN disabled; I2CEN enabled; 
+    I2C1CONL = 0x8200;
+    // P disabled; S disabled; BCL disabled; I2COV disabled; IWCOL disabled; 
+    I2C1STAT = 0x0;
+
+    /* I2C1 Master Events */
+    // clear the master interrupt flag
+    IFS1bits.MI2C1IF = 0;
+    // enable the master interrupt
+    IEC1bits.MI2C1IE = 1;
     
     // Main Program Loop
     while(1) {
