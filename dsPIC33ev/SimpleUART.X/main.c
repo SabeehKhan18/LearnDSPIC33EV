@@ -79,8 +79,8 @@ int main(void) {
     device_initialize();
     device_enableInterrupts();
     TRISBbits.TRISB15 = 0;
-    RPOR0bits.RP20R = 1; // U1TX on pin 13
-    RPINR18bits.U1RXR = 19; // U1RX on pin 12
+    RPOR0bits.RP20R = 1; // U1TX on pin 12
+    RPINR18bits.U1RXR = 19; // U1RX on pin 10
 
     U1MODEbits.STSEL = 0; // 1-Stop bit
     U1MODEbits.PDSEL = 0; // No Parity, 8-Data bits
