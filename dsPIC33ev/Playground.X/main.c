@@ -9,48 +9,47 @@
 #include "main.h"
 #include "device.h"
 #include <xc.h>
+#include <stdio.h>
 #include <libpic30.h>   
 #include <p33ev256gm102.h>
 
 int main(void) {
     
+    // Initialize oscillator
     device_initialize();
-    device_enableInterrupts();
     
+    // Set all TRIS, ANSEL, and PORT to 0
     TRISA = ANSELA = PORTA = 0x00;
     TRISB = ANSELB = PORTB = 0x00;
     
+    // Turn on power LED
+    POWER = 1;
     
-    TRISAbits.TRISA3 = 1;
-    TRISAbits.TRISA4 = 0;
+    // Initialize UART
+    uart_init();
+    printf("UART Initialized\n");
     
-    PORTBbits.RB5 = 1;
+    // Enable interrupts
+    device_enableInterrupts();
+    printf("Interrupts Enabled\n");
     
-    RPOR0bits.RP20R = 1; // U1TX on pin 12
-    RPINR18bits.U1RXR = 19; // U1RX on pin 10
-
-    U1MODEbits.STSEL = 0; // 1-Stop bit
-    U1MODEbits.PDSEL = 0; // No Parity, 8-Data bits
-    U1MODEbits.ABAUD = 0; // Auto-Baud disabled
-    U1MODEbits.BRGH = 0; // Standard-Speed mode
-    U1BRG = BRGVAL; // Baud Rate setting for 9600
-    U1STAbits.UTXISEL0 = 0; // Interrupt after one TX character is transmitted
-    U1STAbits.UTXISEL1 = 0;
-    IEC0bits.U1TXIE = 1; // Enable UART TX interrupt
-    U1MODEbits.UARTEN = 1; // Enable UART
-    U1STAbits.UTXEN = 1; // Enable UART TX
-    /* Wait at least 105 microseconds (1/9600) before sending first char */
-    DELAY_105uS
-    U1TXREG = 'a'; // Transmit one character
+    printf("ID: %i\n", ID);
     
+    printf("Starting Loop\n");
     while(1) {
+        
+        // Check UART
+        if (U1STAbits.FERR == 1) {
+            continue;
+        }
+        /* Must clear the overrun error to keep UART receiving */
+        if (U1STAbits.OERR == 1) {
+            U1STAbits.OERR = 0;
+            continue;
+        }
+  
     }
     
     return 0;
     
-}
-
-void __attribute__((__interrupt__)) _U1TXInterrupt(void) {
-    IFS0bits.U1TXIF = 0; // Clear TX Interrupt flag
-    U1TXREG = 'a';
 }
