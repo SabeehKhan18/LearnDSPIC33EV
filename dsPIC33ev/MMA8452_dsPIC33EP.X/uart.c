@@ -8,13 +8,10 @@
 #include "uart.h"
 #include "xc.h"
 
-void uart_init() {
+void uart_init(int TX, int RX) {
     
-    TRISAbits.TRISA3 = 1;
-    TRISAbits.TRISA4 = 0;
-    
-    RPOR0bits.RP20R = 1; // U1TX on pin 12
-    RPINR18bits.U1RXR = 19; // U1RX on pin 10
+    TX = U1TX; // U1TX on pin 12
+    U1RX = RX; // U1RX on pin 10
 
     U1MODEbits.STSEL = 0; // 1-Stop bit
     U1MODEbits.PDSEL = 0; // No Parity, 8-Data bits

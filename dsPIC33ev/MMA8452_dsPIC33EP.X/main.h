@@ -8,7 +8,6 @@
 #ifndef MAIN_H
 #define	MAIN_H
 
-#define POWER   LATBbits.LATB5;
 
 #endif	/* MAIN_H */
 

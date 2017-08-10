@@ -8,6 +8,7 @@
       <itemPath>device.h</itemPath>
       <itemPath>uart.h</itemPath>
       <itemPath>configurationBits.h</itemPath>
+      <itemPath>MMA8452.h</itemPath>
     </logicalFolder>
     <logicalFolder name="LinkerScript"
                    displayName="Linker Files"
@@ -19,6 +20,7 @@
       <itemPath>main.c</itemPath>
       <itemPath>uart.c</itemPath>
       <itemPath>device.c</itemPath>
+      <itemPath>MMA8452.c</itemPath>
     </logicalFolder>
     <logicalFolder name="ExternalFiles"
                    displayName="Important Files"
