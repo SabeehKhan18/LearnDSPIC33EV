@@ -8,6 +8,7 @@
 #include "configurationBits.h"
 #include "main.h"
 #include "device.h"
+#include "uart.h"
 #include <xc.h>
 #include <stdio.h>
 #include <libpic30.h>   
