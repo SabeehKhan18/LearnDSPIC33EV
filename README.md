@@ -5,10 +5,6 @@ used for projects on our FSAE (Formula Society of Automotive Engineers) team.
 All information may vary and may not be accurate or the best way to achieve the goal. All projects include a description, commented code, and a schematic.
 
 
-## dsPIC33EV Projects
-
-These projects are to help learn how to program the dsPIC33EV. 
-
 
 ## Projects
 
