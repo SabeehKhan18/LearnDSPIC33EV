@@ -1,5 +1,4 @@
-# Random Microcontroller Projects
-
+# Learn dsPIC33EV
 
 This repository is to help me and collaborators learn the basics of the [dsPIC33EV][1]. The dsPIC33EV was chosen because it is a microcontroller
 used for projects on our FSAE (Formula Society of Automotive Engineers) team. 
